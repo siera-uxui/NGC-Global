@@ -293,6 +293,108 @@
         });
 
         // ========================================
+        // INTERACTIVE SERVICE LIFECYCLE INFOGRAPHIC
+        // SVG Circle Rotation based on Scroll Position
+        // ========================================
+
+        var $infographicCircleRotating = $('.infographic-circle-rotating');
+        var $serviceSections = $('.infographic__section');
+
+        if ($infographicCircleRotating.length && $serviceSections.length) {
+
+            // Rotation angles for each quadrant (in degrees)
+            var rotationAngles = [
+                0,    // Service 1/4 - Top Right (Equipment Setup)
+                90,   // Service 2/4 - Top Left (Normal Operations)
+                180,  // Service 3/4 - Bottom Left (Increased Wear)
+                270   // Service 4/4 - Bottom Right (End of Lifecycle)
+            ];
+
+            // Current active section
+            var currentSection = 0;
+
+            // Intersection Observer to detect which section is in view
+            var observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -20% 0px', // Trigger when section is 20% into viewport
+                threshold: [0, 0.25, 0.5, 0.75, 1]
+            };
+
+            var sectionObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                        // Find which section index this is
+                        var sectionIndex = Array.from($serviceSections).indexOf(entry.target);
+
+                        if (sectionIndex !== -1 && sectionIndex !== currentSection) {
+                            currentSection = sectionIndex;
+                            rotateCircle(rotationAngles[sectionIndex]);
+                            highlightQuadrant(sectionIndex);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all service sections
+            $serviceSections.each(function() {
+                sectionObserver.observe(this);
+            });
+
+            // Function to rotate only the quadrant segments (not the center text)
+            function rotateCircle(degrees) {
+                $infographicCircleRotating.css({
+                    'transform': 'rotate(' + degrees + 'deg)',
+                    'transform-origin': '186.5px 186.5px',
+                    'transition': 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                });
+            }
+
+            // Function to highlight the active quadrant (optional visual enhancement)
+            function highlightQuadrant(index) {
+                var $segments = $('.service-circle-segment');
+
+                // Reset all segments to normal opacity
+                $segments.css({
+                    'opacity': '0.6',
+                    'transition': 'opacity 0.6s ease'
+                });
+
+                // Highlight the active segment
+                $segments.eq(index).css('opacity', '1');
+            }
+
+            // Initialize: Set first quadrant as active
+            rotateCircle(rotationAngles[0]);
+            highlightQuadrant(0);
+
+            // Alternative: Smooth scroll-based rotation (more precise)
+            // Uncomment this if you want rotation tied directly to scroll position
+            /*
+            $(window).on('scroll', debounce(function() {
+                var scrollTop = $(window).scrollTop();
+                var windowHeight = $(window).height();
+
+                $serviceSections.each(function(index) {
+                    var $section = $(this);
+                    var sectionTop = $section.offset().top;
+                    var sectionHeight = $section.outerHeight();
+                    var sectionCenter = sectionTop + (sectionHeight / 2);
+                    var viewportCenter = scrollTop + (windowHeight / 2);
+
+                    // Check if section center is near viewport center
+                    if (Math.abs(sectionCenter - viewportCenter) < windowHeight / 3) {
+                        if (currentSection !== index) {
+                            currentSection = index;
+                            rotateCircle(rotationAngles[index]);
+                            highlightQuadrant(index);
+                        }
+                    }
+                });
+            }, 50));
+            */
+        }
+
+        // ========================================
         // CONSOLE MESSAGE
         // ========================================
 

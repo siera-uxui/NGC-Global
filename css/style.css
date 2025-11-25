@@ -345,11 +345,23 @@ a:focus {
   list-style: none;
 }
 
+/* Line 258 - Update this rule */
 .nav__links--secondary img {
   width: 22px;
   height: 22px;
   filter: brightness(0) invert(1);
   transition: opacity 0.3s ease;
+}
+
+/* Add this NEW rule right after to override for language icon */
+.fl-language--icon img {
+  filter: none !important;  /* Remove the white filter */
+  border-radius: 50%;
+  padding: 1px;
+  background: white;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
 }
 
 .nav__links--secondary a:hover img {
@@ -877,19 +889,21 @@ a:focus {
   display: flex;
 }
 
+.fl-media-comp--media img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .fl-v-center {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 40px;
+  height: 100%; /* ADD THIS */
 }
 
-.fl-media-comp--media img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
 
 .fl-media-comp--right .fl-media-comp--media {
   order: 2;
@@ -960,6 +974,184 @@ a:focus {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* ========================================
+   SERVICE LIFECYCLE INFOGRAPHIC
+   Interactive SVG Circle with Scroll-based Rotation
+   ======================================== */
+
+#infographic-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 60px 0;
+}
+
+.infographic-animation {
+  display: flex;
+  align-items: flex-start;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* SVG Circle Container - Sticky Positioning */
+.infographic-circle--wrapper {
+  position: sticky;
+  top: 120px;
+  flex: 0 0 400px;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* SVG Circle - Base */
+.infographic-circle {
+  width: 100%;
+  height: 100%;
+}
+
+/* Rotating Quadrants Group - Only this rotates */
+.infographic-circle-rotating {
+  transform-origin: 186.5px 186.5px;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Static Center Circle and Text - Never rotates */
+.infographic-circle-center {
+  /* Stays fixed in place */
+}
+
+/* Quadrant Segments - Opacity Transitions */
+.service-circle-segment {
+  opacity: 0.6;
+  transition: opacity 0.6s ease;
+  cursor: pointer;
+}
+
+.service-circle-segment:hover {
+  opacity: 0.8;
+}
+
+/* Content Sections - Right Side */
+.infographic__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.infographic__section {
+  margin-bottom: 120px;
+  padding: 40px 0;
+  min-height: 400px;
+}
+
+.infographic__section:last-child {
+  margin-bottom: 0;
+}
+
+.infographic__item {
+  margin-bottom: 40px;
+}
+
+.infographic__item h3 {
+  color: #227dc6;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.infographic__item h2 {
+  color: #00224B;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.infographic__item h4 {
+  color: #00224B;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+
+.infographic__item p {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+.infographic__item ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.infographic__item ul li {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  padding-left: 0;
+}
+
+.service-list-bullet {
+  color: #227dc6;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .infographic-animation {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .infographic-circle--wrapper {
+    position: relative;
+    top: 0;
+    flex: 0 0 300px;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+  }
+
+  .infographic__section {
+    margin-bottom: 80px;
+    min-height: auto;
+  }
+
+  .infographic__item h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .infographic-circle--wrapper {
+    width: 250px;
+    height: 250px;
+  }
+
+  .infographic__item h2 {
+    font-size: 24px;
+  }
+
+  .infographic__item h4 {
+    font-size: 18px;
+  }
+
+  .infographic__section {
+    margin-bottom: 60px;
+  }
 }
 
 /* ========================================
@@ -1258,7 +1450,7 @@ button:focus {
 }
 
 .banner-content-box {
-  background-color: rgba(34, 125, 198, 0.4);
+  background-color: rgba(34, 125, 198, 0.6);
   padding: 40px;
   max-width: 600px;
   border-radius: 4px;
@@ -1383,3 +1575,4 @@ button:focus {
     max-width: 300px;
   }
 }
+
