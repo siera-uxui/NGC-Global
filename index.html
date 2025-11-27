@@ -478,10 +478,12 @@
     <section class="hero-section-wrapper">
         <div class="smd component smdmegabanner cmsitem_hero-homepage">
             <div class="bannercontent">
-                <!-- Full-Screen Video Background -->
-                <video class="hero-video" autoplay loop muted playsinline>
+                <!-- Full-Screen Video Background - Crossfade Between Two Videos -->
+                <video class="hero-video active" muted playsinline>
                     <source src="assets/hero-video.mp4" type="video/mp4">
-                    <!-- Fallback gradient if video doesn't load -->
+                </video>
+                <video class="hero-video inactive" muted playsinline>
+                    <source src="assets/hero-video-2.mp4" type="video/mp4">
                 </video>
                 <div class="hero-video-fallback"></div>
 

@@ -439,6 +439,77 @@
         }
 
         // ========================================
+        // HERO VIDEO CROSSFADE - HYBRID SWITCHING
+        // First video: 8 seconds, Second video: full duration minus crossfade
+        // ========================================
+
+        var heroVideos = document.querySelectorAll('.hero-video');
+
+        if (heroVideos.length >= 2) {
+            var currentVideoIndex = 0;
+            var switchTimer;
+            var crossfadeDuration = 2000; // 2 seconds in milliseconds
+
+            function switchVideo() {
+                var currentVideo = heroVideos[currentVideoIndex];
+                var nextVideoIndex = (currentVideoIndex + 1) % heroVideos.length;
+                var nextVideo = heroVideos[nextVideoIndex];
+
+                // Start next video playing BEFORE fade begins
+                nextVideo.currentTime = 0;
+                nextVideo.play();
+                nextVideo.classList.remove('inactive');
+                nextVideo.classList.add('active');
+
+                // Fade out current video (both videos now playing simultaneously)
+                currentVideo.classList.remove('active');
+                currentVideo.classList.add('inactive');
+
+                // Update index
+                currentVideoIndex = nextVideoIndex;
+
+                // Clear any existing timer
+                if (switchTimer) {
+                    clearTimeout(switchTimer);
+                    switchTimer = null;
+                }
+
+                // First video (index 0): use 8-second timer
+                if (currentVideoIndex === 0) {
+                    switchTimer = setTimeout(switchVideo, 8000);
+                }
+                // Second video (index 1): calculate duration minus crossfade time
+                else if (currentVideoIndex === 1) {
+                    var videoDuration = heroVideos[1].duration;
+                    if (videoDuration && !isNaN(videoDuration)) {
+                        // Start crossfade 2 seconds before video ends
+                        var waitTime = (videoDuration * 1000) - crossfadeDuration;
+                        switchTimer = setTimeout(switchVideo, waitTime);
+                    }
+                }
+            }
+
+            // Fallback: Add 'ended' event listener to second video in case duration isn't available
+            heroVideos[1].addEventListener('ended', function() {
+                // Only trigger if second video is currently active and no timer is set
+                if (currentVideoIndex === 1 && !switchTimer) {
+                    switchVideo();
+                }
+            });
+
+            // Wait for metadata to load before starting
+            heroVideos[1].addEventListener('loadedmetadata', function() {
+                // Metadata loaded, duration is now available
+            });
+
+            // Start first video and set initial 8-second timer
+            heroVideos[0].play().catch(function(error) {
+                console.log('Video autoplay prevented:', error);
+            });
+            switchTimer = setTimeout(switchVideo, 8000);
+        }
+
+        // ========================================
         // CONSOLE MESSAGE
         // ========================================
 

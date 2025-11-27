@@ -655,7 +655,7 @@ a:focus {
   align-items: center;
 }
 
-/* Full-Screen Video Background */
+/* Full-Screen Video Background - Crossfade Support */
 .hero-video {
   position: absolute;
   top: 0;
@@ -664,6 +664,17 @@ a:focus {
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  transition: opacity 2s ease-in-out;
+}
+
+/* Active video - visible */
+.hero-video.active {
+  opacity: 1;
+}
+
+/* Inactive video - hidden */
+.hero-video.inactive {
+  opacity: 0;
 }
 
 /* Video Fallback (gradient) */
